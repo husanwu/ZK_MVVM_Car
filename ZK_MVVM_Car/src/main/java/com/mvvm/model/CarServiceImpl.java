@@ -2,6 +2,9 @@ package com.mvvm.model;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
 
 public class CarServiceImpl implements CarService{
 
@@ -93,20 +96,20 @@ public class CarServiceImpl implements CarService{
 		return carList;
 	}
 
-	public List<Car> search(String keyword){
-		List<Car> result = new LinkedList<Car>();
-		if (keyword==null || "".equals(keyword)){
-			result = carList;
-		}else{
-			for (Car c: carList){
-				if (c.getModel().toLowerCase().contains(keyword.toLowerCase())
-					||c.getMake().toLowerCase().contains(keyword.toLowerCase())){
-					result.add(c);
-				}
-			}
-		}
-		return result;
-	}
+    public List<Car> search(String keyword) {
+        if (StringUtils.isBlank(keyword)) {
+            // 將 static 直接 return 出去通常會造成資安問題
+            // 因此需要另外建立一份副本
+            return new LinkedList<>(carList);
+        }
+
+        String keywordLowerCase = keyword.toLowerCase();
+        // 改用 Java 8 lambda 寫程式
+        return carList.stream()
+                    .filter(c -> c.getModel().toLowerCase().contains(keywordLowerCase)
+                            || c.getMake().toLowerCase().contains(keywordLowerCase))
+                    .collect(Collectors.toList()); 
+    }
 
     public void insert(Car car) {
         car.setId(id++);
