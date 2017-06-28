@@ -40,7 +40,6 @@ public class SearchViewModel {
         selectedCar = null;
     }
 
-    //使用Messagebox刪除，但刪除按鈕需要按兩次才會從頁面上消失?
     @NotifyChange({"carList", "selectedCar"})
     @Command
     public void deleteMsg() {
