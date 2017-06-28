@@ -1,0 +1,52 @@
+<grid>
+    <columns>
+        <column label="項目" width="30%" />
+        <column label="內容" width="70%"/>
+    </columns>
+    <rows>
+        <row>
+            <label value="ID"/>
+            <hlayout>
+                <label id="id" value="@load(vm.selectedCar.id)" />
+            </hlayout>
+        </row>
+        <row>
+            <label value="名稱"/>
+            <hlayout>
+                <textbox id="model" value="@bind(vm.selectedCar.model)" />
+            </hlayout>
+        </row>
+        <row>
+            <label value="製造商"/>
+            <hlayout>
+                <textbox id="make" value="@bind(vm.selectedCar.make)" />
+            </hlayout>
+        </row>
+        <row>
+            <label value="價格"/>
+            <hlayout>
+                <textbox id="price" value="@bind(vm.selectedCar.price)" />
+            </hlayout>
+        </row>
+        <row>
+            <label value="描述"/>
+            <hlayout>
+                <textbox id="des" rows="5" width="300px" value="@bind(vm.selectedCar.description)" />
+            </hlayout>
+        </row>
+        <row>
+            <label value="圖片"/>
+            <hlayout>
+                <button label="上傳圖片" upload="true,maxsize=300">
+                    <attribute name="onUpload"></attribute>
+                </button>
+            </hlayout>
+        </row>
+        <row>
+            <cell colspan="3" style="text-align:center">
+                <button label="送出" onClick="@command('update')" />
+                <button label="取消" onClick="@command('hideUpdate')" />
+            </cell>
+        </row>
+    </rows>
+</grid>

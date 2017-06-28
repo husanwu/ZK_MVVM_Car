@@ -1,5 +1,5 @@
 <window title="Insert" width="600px" border="normal" apply="org.zkoss.bind.BindComposer"
-         viewModel="@id('ivm') @init('com.mvvm.viewmodle.InsertViewModel')">
+         viewModel="@id('ivm') @init('com.mvvm.viewmodel.InsertViewModel')">
 <grid>
     <columns>
         <column label="項目" width="30%" />
@@ -9,31 +9,31 @@
         <row>
             <label value="名稱"/>
             <hlayout>
-                <textbox value="@save(ivm.car.model)" />
+                <textbox id="model" value="@save(ivm.car.model)" />
             </hlayout>
         </row>
         <row>
             <label value="製造商"/>
             <hlayout>
-                <textbox value="@save(ivm.car.make)" />
+                <textbox id="make" value="@save(ivm.car.make)" />
             </hlayout>
         </row>
         <row>
             <label value="價格"/>
             <hlayout>
-                <textbox value="@save(ivm.car.price)" />
+                <textbox id="price" value="@save(ivm.car.price)" />
             </hlayout>
         </row>
         <row>
             <label value="描述"/>
             <hlayout>
-                <textbox rows="5" width="300px" value="@save(ivm.car.description)" />
+                <textbox id="des" rows="5" width="300px" value="@save(ivm.car.description)" />
             </hlayout>
         </row>
         <row>
             <label value="圖片"/>
             <hlayout>
-                <button label="Upload Image" upload="true,maxsize=300">
+                <button label="上傳圖片" upload="true,maxsize=300">
                     <attribute name="onUpload"></attribute>
                 </button>
             </hlayout>
@@ -41,7 +41,17 @@
         <row>
             <cell colspan="3" style="text-align:center">
                 <button label="回前一頁" href="index.zul" />
-                <button label="新增"  onClick="@command('insert')"/>
+                <button label="新增" onClick="@command('insert')">
+                    <attribute name="onClick"><![CDATA[
+                        int msg = Messagebox.show("新增成功", "Information", Messagebox.OK, Messagebox.INFORMATION);
+                        if(msg == 1) {
+                            model.setValue("");
+                            make.setValue("");
+                            price.setValue("");
+                            des.setValue("");
+                        }
+                    ]]></attribute>
+                </button>
             </cell>
         </row>
     </rows>
