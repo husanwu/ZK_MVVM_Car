@@ -33,9 +33,7 @@
         <row>
             <label value="圖片"/>
             <hlayout>
-                <button label="上傳圖片" upload="true,maxsize=300">
-                    <attribute name="onUpload"></attribute>
-                </button>
+                <button label="上傳圖片" upload="true" onUpload="@command('uploadImg', media=event.media)" />
             </hlayout>
         </row>
         <row>
