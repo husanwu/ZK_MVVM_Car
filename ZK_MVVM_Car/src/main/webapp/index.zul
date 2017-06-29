@@ -6,18 +6,22 @@
 		<button label="Search" image="/widgets/getting_started/img/search.png" onClick="@command('search')" />
         <button label="新增車輛" href="insert.zul" />
 	</hbox>
-	<listbox height="160px" model="@load(vm.carList)" emptyMessage="No car found in the result"
-	          selectedItem="@save(vm.selectedCar)" style="margin-top:10px">
+	<listbox height="170px" model="@load(vm.carList)" emptyMessage="No car found in the result"
+	          selectedItem="@save(vm.selectedCar)" style="margin-top:10px" mold="paging" pageSize="3"> <!--Client端分頁可以直接用mold/pageSize屬性設定-->
 		<listhead>
+            <listheader label="No" width="6%" />
 			<listheader label="Model" />
 			<listheader label="Make" />
-			<listheader label="Price" width="20%"/>
+			<listheader label="Price" width="20%" />
+			<listheader label="Delete" width="12%" />
 		</listhead>
 		<template name="model">
 			<listitem>
+                <listcell label="${forEachStatus.index + 1}"></listcell>
 				<listcell label="@load(each.model)"></listcell>
 				<listcell label="@load(each.make)"></listcell>
 				<listcell>$<label value="@load(each.price)" /></listcell>
+				<listcell><button label="刪除" onClick="@command('deleteMsg', thiscar=each)" /></listcell>
 			</listitem>
 		</template>
 	</listbox>
@@ -41,7 +45,6 @@
 			<label value="@load(vm.selectedCar.description)" />
             <hbox align="center" style="margin:10px">
                 <button label="修改" onClick="@command('showUpdate')" />
-                <button label="刪除" onClick="@command('deleteMsg')" />
             </hbox>
 		</vbox>
 	</hbox>
