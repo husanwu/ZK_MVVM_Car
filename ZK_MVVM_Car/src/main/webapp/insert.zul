@@ -1,5 +1,5 @@
 <window title="Insert" width="600px" border="normal" apply="org.zkoss.bind.BindComposer"
-         viewModel="@id('ivm') @init('com.mvvm.viewmodel.InsertViewModel')">
+         viewModel="@id('ivm') @init('com.mvvm.viewmodel.InsertViewModel')" >
 <grid>
     <columns>
         <column label="項目" width="30%" />
@@ -33,7 +33,7 @@
         <row>
             <label value="圖片"/>
             <hlayout>
-                <button label="上傳圖片" upload="true" onUpload="@command('uploadImg', media=event.media)" />
+                <button label="上傳圖片" upload="true" onUpload="@command('uploadImg',media=event.media)" />
             </hlayout>
         </row>
         <row>
