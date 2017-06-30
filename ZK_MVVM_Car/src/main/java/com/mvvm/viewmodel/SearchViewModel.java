@@ -52,10 +52,10 @@ public class SearchViewModel {
     @NotifyChange({"carList", "selectedCar"})
     public void deleteMsg(@BindingParam("thiscar") Car car) {
         Messagebox.show("確定刪除?", "刪除", Messagebox.OK | Messagebox.CANCEL, Messagebox.EXCLAMATION,
-                            new org.zkoss.zk.ui.event.EventListener() {
+                            new org.zkoss.zk.ui.event.EventListener<Event>() {
             @Override
             public void onEvent(Event evt) throws Exception {
-                if (evt.getName().equals("onOK")) {
+                if ("onOK".equals(evt.getName())) {
                     carService.delete(car);
                     carList = carService.search(keyword);
                     selectedCar = null;
