@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.1.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/data/jpa
+        http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+    
+    <!-- annotation -->
+    <context:component-scan base-package="spring.mvvm.model" />
+    
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="oracle.jdbc.OracleDriver" />
+        <property name="url" value="jdbc:oracle:thin:@localhost:32769:XE" />
+        <property name="username" value="dsi" />
+        <property name="password" value="dsi1234" />
+    </bean>
+    
+<!--     <bean id="sharedEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean"> -->
+<!--         <property name="entityManagerFactory" ref="entityManagerFactory" /> -->
+<!--     </bean> -->
+    
+    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="showSql" value="false" />
+    </bean>
+    
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>
+        <property name="dataSource" ref="dataSource" />
+        <property name="packagesToScan" value="spring.mvvm.model" />
+    </bean>
+    
+    <!-- Transaction Manager -->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+    
+    <!-- Enable annotation driven transaction management -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <!-- Configure Spring Data JPA and set the base package of the repository interfaces -->
+    <jpa:repositories base-package="spring.mvvm.model"/>
+</beans>
