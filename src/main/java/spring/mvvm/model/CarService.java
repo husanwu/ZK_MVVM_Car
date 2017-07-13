@@ -20,5 +20,5 @@ public interface CarService {
 	List<Car> findByModelOrMake(String keyword);
 	Car insert(Car car);
 	Car update(Car car);
-	void delete(Car car);
+	void delete(Integer id);
 }

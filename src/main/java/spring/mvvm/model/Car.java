@@ -2,20 +2,18 @@ package spring.mvvm.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.Setter;
 
 // getter & setter 交由 lombok 產生
 @Entity
-@Table(name = "Car")
+//@Table(name = "Car")
 @Getter
 @Setter
 /**
@@ -25,24 +23,24 @@ import lombok.Setter;
 */
 public class Car implements Serializable{
 
-    @Id @Column(name = "id")
+    @Id
     @SequenceGenerator(name="seq", sequenceName="car_seq", allocationSize=0)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="seq")
     private Integer id;
 
-    @Column(name = "model")
+//    @Column(name = "model")
 	private String model;
 
-    @Column(name = "make")
+//    @Column(name = "make")
 	private String make;
 
-    @Column(name = "preview")
+//    @Column(name = "preview")
 	private String preview;
 
-    @Column(name = "description")
+//    @Column(name = "description")
 	private String description;
 
-    @Column(name = "price")
+//    @Column(name = "price")
 	private Integer price;
 
 	public Car() {
@@ -60,9 +58,12 @@ public class Car implements Serializable{
 		this.price = price;
 	}
 
-	public Car(String model, String make) {
-	    this.model = model;
-	    this.make = make;
+	public Car(String model, String make, String description, String preview, Integer price) {
+        this.model = model;
+        this.make = make;
+        this.preview = preview;
+        this.description = description;
+        this.price = price;
 	}
 
 }
