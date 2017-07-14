@@ -3,7 +3,7 @@ package spring.mvvm.model;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class SpringDataJPA_Test {
+public final class SpringDataJPA_Test {
 
     public static void main(String[] args) {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("beans-config.xml");
@@ -43,7 +43,7 @@ public class SpringDataJPA_Test {
 //        );
 
         //findByModelOrMake
-//        List<Car> carList = carService.findByModelOrMake("c");
+//        List<Car> carList = carService.search("n");
 //        carList.forEach(car ->
 //            System.out.println(car.getId() + ", " + car.getModel() + ", " + car.getMake())
 //        );
