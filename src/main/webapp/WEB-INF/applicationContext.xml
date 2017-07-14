@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+    xmlns:zksp="http://www.zkoss.org/2008/zkspring/core"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/data/jpa
+        http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+        http://www.zkoss.org/2008/zkspring/core http://www.zkoss.org/2008/zkspring/core/zkspring-core.xsd">
+    
+    <!-- 掃描某個套件內是否有被相關 Annotation 設定為元件的類別 -->
+    <context:component-scan base-package="spring.mvvm" />
+<!--     也 -->
+    <!-- <context:annotation-config /> -->
+    
+    <!-- Enables ZK custom scopes for Spring Beans -->
+    <zksp:zk-config/>
+    
+    <!-- 建立 dataSource -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="oracle.jdbc.OracleDriver" />
+        <property name="url" value="jdbc:oracle:thin:@localhost:32769:XE" />
+        <property name="username" value="dsi" />
+        <property name="password" value="dsi1234" />
+    </bean>
+        
+    <!-- 建立 paVendorAdapter，告訴 Spring 要採用何種 ORM 實作，用以建立 entityManagerFactory -->
+    <!-- 以下採用 Hibernate，可以設定 Hibernate 提供的屬性 -->
+    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="showSql" value="true" />
+    </bean>
+    
+    <!-- 建立 entityManagerFactory，注入 jpaVendorAdapter、dataSource -->
+    <!-- Spring 3.1 後，使用 packagesToScan，可以不用再配置 META-INF/persistence.xml -->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>
+        <property name="dataSource" ref="dataSource" />
+        <property name="persistenceUnitName" value="myJPAUnit" />
+        <property name="packagesToScan" value="spring.mvvm" />
+    </bean>
+    
+    <!-- 建立 Transaction Manager，注入 entityManagerFactory -->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+    
+    <!-- 啟用 @Transactional Annotation 的支援 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <!-- 組態 Spring Data JPA，設定掃描某個套件下的 repository interfaces -->
+    <jpa:repositories base-package="spring.mvvm"/>
+</beans>

@@ -61,6 +61,12 @@
             <artifactId>zhtml</artifactId>
             <version>${zk.version}</version>
         </dependency>
+        <!-- 加入ZK Spring Core -->
+        <dependency>
+            <groupId>org.zkoss.zk</groupId>
+            <artifactId>zkspring-core</artifactId>
+            <version>3.1.1</version>
+        </dependency>
 
         <!-- Apache Common Library -->
         <dependency>
