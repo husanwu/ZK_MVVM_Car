@@ -3,7 +3,9 @@ package spring.mvvm.model;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service("carService")
 public class CarServiceImpl implements CarService {
@@ -17,21 +19,21 @@ public class CarServiceImpl implements CarService {
 	}
 
     @Override
-    public List<Car> findByModelOrMake(String keyword) {
-        return repository.findByModelOrMake(keyword);
+    public List<Car> search(String keyword) {
+        return repository.findByModelOrMake(keyword, new Sort("id"));
     }
 
-    @Override
+    @Override @Transactional
     public Car insert(Car car) {
         return repository.save(car);
     }
 
-    @Override
+    @Override @Transactional
     public Car update(Car car) {
         return repository.save(car);
     }
 
-    @Override
+    @Override @Transactional
     public void delete(Integer id) {
         repository.delete(id);
     }

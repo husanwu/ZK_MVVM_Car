@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 
 import lombok.Getter;
@@ -16,16 +17,13 @@ import lombok.Setter;
 //@Table(name = "Car")
 @Getter
 @Setter
-/**
- * use JPA NameQuery
- * @NamedQuery(name = "Car.findByModelOrMake",
-                query = "select c from Car where c.model like '%?1%' or c.make like %?2%")
-*/
-public class Car implements Serializable{
+@NamedQuery(name = "Car.findAll",
+             query = "select c from Car c order by c.id")
+public class Car implements Serializable {
 
     @Id
-    @SequenceGenerator(name="seq", sequenceName="car_seq", allocationSize=0)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="seq")
+    @SequenceGenerator(name = "seq", sequenceName = "car_seq", allocationSize = 0)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
     private Integer id;
 
 //    @Column(name = "model")
@@ -56,14 +54,6 @@ public class Car implements Serializable{
 		this.preview = preview;
 		this.description = description;
 		this.price = price;
-	}
-
-	public Car(String model, String make, String description, String preview, Integer price) {
-        this.model = model;
-        this.make = make;
-        this.preview = preview;
-        this.description = description;
-        this.price = price;
 	}
 
 }

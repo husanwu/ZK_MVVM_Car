@@ -17,8 +17,9 @@ public interface CarService {
 	 */
 
     Car findOne(Integer id);
-	List<Car> findByModelOrMake(String keyword);
+	List<Car> search(String keyword);
 	Car insert(Car car);
 	Car update(Car car);
 	void delete(Integer id);
+
 }
