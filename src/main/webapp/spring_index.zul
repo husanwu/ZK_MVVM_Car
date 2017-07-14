@@ -1,0 +1,51 @@
+<window title="Search" width="600px" border="normal" apply="org.zkoss.bind.BindComposer"
+         viewModel="@id('vm') @init('spring.mvvm.viewmodel.SearchViewModel')">
+    <hbox align="center">
+        Keyword:
+        <textbox value="@save(vm.keyword)" />
+        <button label="Search" image="/widgets/getting_started/img/search.png" onClick="@command('search')" />
+        <button label="新增車輛" href="spring_insert.zul" />
+    </hbox>
+    <listbox height="170px" model="@load(vm.carList)" emptyMessage="No car found in the result"
+              selectedItem="@save(vm.selectedCar)" style="margin-top:10px" mold="paging" pageSize="3"> <!--Client端分頁可以直接用mold/pageSize屬性設定-->
+        <listhead>
+            <listheader label="No" width="6%" />
+            <listheader label="Model" />
+            <listheader label="Make" />
+            <listheader label="Price" width="20%" />
+            <listheader label="Delete" width="12%" />
+        </listhead>
+        <template name="model">
+            <listitem>
+                <listcell label="${forEachStatus.index + 1}"></listcell>
+                <listcell label="@load(each.model)"></listcell>
+                <listcell label="@load(each.make)"></listcell>
+                <listcell>$<label value="@load(each.price)" /></listcell>
+                <listcell><button label="刪除" onClick="@command('deleteMsg', thiscar=each)" /></listcell>
+            </listitem>
+        </template>
+    </listbox>
+    <include src="update.zul" visible="@load(vm.upVisible)"/>
+    <hbox style="margin-top:20px" visible="@load(not empty vm.selectedCar)">
+        <image src="@load(vm.selectedCar.preview)" width="200px" style="padding:10px" />
+        <vbox>
+            <hlayout>
+                id: <label value="@load(vm.selectedCar.id)"></label>
+            </hlayout>
+            <hlayout>
+                Model : <label value="@load(vm.selectedCar.model)" style="font-weight:bold"/>
+            </hlayout>
+            <hlayout>
+                Make : <label value="@load(vm.selectedCar.make)" style="font-weight:bold"/>
+            </hlayout>
+            <hlayout>
+                Price : 
+                <span>$<label value="@load(vm.selectedCar.price)" style="font-weight:bold"/></span>
+            </hlayout>
+            <label value="@load(vm.selectedCar.description)" />
+            <hbox align="center" style="margin:10px">
+                <button label="修改" onClick="@command('showUpdate')" />
+            </hbox>
+        </vbox>
+    </hbox>
+</window>

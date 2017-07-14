@@ -9,20 +9,23 @@ import java.util.Properties;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.util.media.Media;
+import org.zkoss.zk.ui.select.annotation.VariableResolver;
+import org.zkoss.zk.ui.select.annotation.WireVariable;
 
 import com.mvvm.model.Car;
 import com.mvvm.model.CarService;
-import com.mvvm.model.CarServiceImpl;
 
 import lombok.Getter;
 import lombok.Setter;
 
+@VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class InsertViewModel {
     @Getter
     @Setter
     private Car car = new Car();
 
-    private CarService carService = new CarServiceImpl();
+    @WireVariable
+    private CarService carService;
 
     @Command
     public void insert() {

@@ -6,16 +6,17 @@ import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.select.annotation.VariableResolver;
+import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.Messagebox;
-
-import com.mvvm.model.Car;
-import com.mvvm.model.CarService;
-import com.mvvm.model.CarServiceImpl;
 
 import lombok.Getter;
 import lombok.Setter;
+import spring.mvvm.model.Car;
+import spring.mvvm.model.CarService;
 @Getter
 @Setter
+@VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class SearchViewModel {
 
 	private String keyword;
@@ -23,7 +24,8 @@ public class SearchViewModel {
 	private Car selectedCar;
 	private boolean upVisible = false;
 
-	private CarService carService = new CarServiceImpl();
+	@WireVariable
+	private CarService carService;
 
     @Command
 	@NotifyChange({"carList", "selectedCar", "upVisible"})
@@ -42,7 +44,7 @@ public class SearchViewModel {
     @Command
     @NotifyChange({"carList", "selectedCar"})
     public void delete(@BindingParam("thiscar") Car car) {
-        carService.delete(car);
+        carService.delete(car.getId());
         //刪除car時，清空selectedCar，並重新載入Car清單
         carList = carService.search(keyword);
         selectedCar = null;
@@ -56,7 +58,7 @@ public class SearchViewModel {
             @Override
             public void onEvent(Event evt) throws Exception {
                 if ("onOK".equals(evt.getName())) {
-                    carService.delete(car);
+                    carService.delete(car.getId());
                     carList = carService.search(keyword);
                     selectedCar = null;
                 }
@@ -66,8 +68,7 @@ public class SearchViewModel {
 
     @Command
     public void update() {
-        int i = carList.indexOf(selectedCar);
-        carService.update(i, selectedCar);
+        carService.update(selectedCar);
     }
 
     //設定修改區塊Visible
