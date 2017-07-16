@@ -15,16 +15,16 @@ import org.zkoss.zk.ui.select.annotation.WireVariable;
 import lombok.Getter;
 import lombok.Setter;
 import spring.mvvm.model.Car;
-import spring.mvvm.model.CarService;
-@Getter
-@Setter
+import spring.mvvm.service.CarService;
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class InsertViewModel {
 
+    @Getter
+    @Setter
+    private Car car = new Car();
+
     @WireVariable
     public CarService carService;
-
-    private Car car = new Car();
 
     @Command
     public void insert() {
