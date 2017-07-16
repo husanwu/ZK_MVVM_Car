@@ -15,9 +15,10 @@
             <listheader label="Price" width="20%" />
             <listheader label="Delete" width="12%" />
         </listhead>
-        <template name="model">
+        <template name="model" status="status">
             <listitem>
-                <listcell label="${forEachStatus.index + 1}"></listcell>
+                <listcell label="@load(status.index + 1)"></listcell>
+<!--                 <listcell label="${forEachStatus.index + 1}"></listcell> -->
                 <listcell label="@load(each.model)"></listcell>
                 <listcell label="@load(each.make)"></listcell>
                 <listcell>$<label value="@load(each.price)" /></listcell>

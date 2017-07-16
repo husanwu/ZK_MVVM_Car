@@ -21,7 +21,6 @@
     
     <!-- 掃描某個套件內是否有被相關 Annotation 設定為元件的類別 -->
     <context:component-scan base-package="spring.mvvm" />
-<!--     也 -->
     <!-- <context:annotation-config /> -->
     
     <!-- Enables ZK custom scopes for Spring Beans -->
@@ -59,5 +58,5 @@
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <!-- 組態 Spring Data JPA，設定掃描某個套件下的 repository interfaces -->
-    <jpa:repositories base-package="spring.mvvm"/>
+    <jpa:repositories base-package="spring.mvvm.repository"/>
 </beans>

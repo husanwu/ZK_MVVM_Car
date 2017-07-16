@@ -19,6 +19,7 @@
     
     <!-- 掃描某個套件內是否有被相關 Annotation 設定為元件的類別 -->
     <context:component-scan base-package="spring.mvvm" />
+    <!-- <context:annotation-config /> -->
     
     <!-- 建立 dataSource -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
