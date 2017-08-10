@@ -6,26 +6,28 @@
         <button label="Search" image="/widgets/getting_started/img/search.png" onClick="@command('search')" />
         <button label="新增車輛" href="spring_insert.zul" />
     </hbox>
-    <listbox height="170px" model="@load(vm.carList)" emptyMessage="No car found in the result"
-              selectedItem="@save(vm.selectedCar)" style="margin-top:10px" mold="paging" pageSize="3"> <!--Client端分頁可以直接用mold/pageSize屬性設定-->
-        <listhead>
-            <listheader label="No" width="6%" />
-            <listheader label="Model" />
-            <listheader label="Make" />
-            <listheader label="Price" width="20%" />
-            <listheader label="Delete" width="12%" />
-        </listhead>
-        <template name="model" status="status">
-            <listitem>
-                <listcell label="@load(status.index + 1)"></listcell>
-<!--                 <listcell label="${forEachStatus.index + 1}"></listcell> -->
-                <listcell label="@load(each.model)"></listcell>
-                <listcell label="@load(each.make)"></listcell>
-                <listcell>$<label value="@load(each.price)" /></listcell>
-                <listcell><button label="刪除" onClick="@command('deleteMsg', thiscar=each)" /></listcell>
-            </listitem>
-        </template>
-    </listbox>
+    <vbox>
+        <listbox height="150px" model="@load(vm.carList)" emptyMessage="No car found in the result"
+                  selectedItem="@save(vm.selectedCar)" style="margin-top:10px" >
+            <listhead>
+                <listheader label="No" width="6%" />
+                <listheader label="Model" />
+                <listheader label="Make" />
+                <listheader label="Price" width="20%" />
+                <listheader label="Delete" width="12%" />
+            </listhead>
+            <template name="model" status="status">
+                <listitem>
+                    <listcell label="@load(status.index + (vm.activePage * vm.pageSize) + 1)"></listcell>
+                    <listcell label="@load(each.model)"></listcell>
+                    <listcell label="@load(each.make)"></listcell>
+                    <listcell>$<label value="@load(each.price)" /></listcell>
+                    <listcell><button label="刪除" onClick="@command('deleteMsg', thiscar=each)" /></listcell>
+                </listitem>
+            </template>
+        </listbox>
+        <paging detailed="true" totalSize="@load(vm.totalSize)" pageSize="@load(vm.pageSize)" activePage="@bind(vm.activePage)" onClick="@command('search')" />
+    </vbox>
     <include src="update.zul" visible="@load(vm.upVisible)"/>
     <hbox style="margin-top:20px" visible="@load(not empty vm.selectedCar)">
         <image src="@load(vm.selectedCar.preview)" width="200px" style="padding:10px" />

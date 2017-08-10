@@ -1,9 +1,11 @@
 package spring.mvvm.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,13 +19,17 @@ public class CarServiceImpl implements CarService {
     CarRepository repository;
 
     @Override
-    public Iterable<Car> findAll() {
-	    return repository.findAll();
-	}
+    public Car findOne(Integer id) {
+        return repository.findOne(id);
+    }
 
     @Override
-    public List<Car> search(String keyword) {
-        return repository.findByModelOrMake(keyword, new Sort("id"));
+    public Page<Car> search(String keyword, Integer activePage, Integer pageSize) {
+        Pageable pageable = new PageRequest(activePage, pageSize, new Sort(Direction.ASC, "id"));
+        if (keyword == null || keyword.trim().length() == 0) {
+            return repository.findAll(pageable);
+        }
+        return repository.findByModelOrMake(keyword, pageable);
     }
 
     @Override @Transactional
@@ -44,11 +50,6 @@ public class CarServiceImpl implements CarService {
     @Override
     public String toString() {
         return "Hi";
-    }
-
-    @Override
-    public Car findOne(Integer id) {
-        return repository.findOne(id);
     }
 
 }

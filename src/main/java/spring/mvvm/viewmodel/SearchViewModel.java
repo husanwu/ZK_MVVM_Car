@@ -2,6 +2,7 @@ package spring.mvvm.viewmodel;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
@@ -19,23 +20,28 @@ import spring.mvvm.service.CarService;
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class SearchViewModel {
 
+    @WireVariable
+    private CarService carService;
+
 	private String keyword;
 	private List<Car> carList;
 	private Car selectedCar;
 	private boolean upVisible = false;
-
-	@WireVariable
-	private CarService carService;
+	private Integer activePage = 0;
+	private Integer pageSize = 3;
+	private Integer totalSize;
 
     @Command
-	@NotifyChange({"carList", "selectedCar", "upVisible"})
-	public void search() {
-		carList = carService.search(keyword);
-		//執行新的查詢時，清空selectedCar
-		selectedCar = null;
-		//執行新的查詢時，隱藏修改區塊
-		upVisible = false;
-	}
+    @NotifyChange({"carList", "selectedCar", "upVisible", "activePage", "totalSize"})
+    public void search() {
+        Page<Car> carPage = carService.search(keyword, activePage, pageSize);
+        carList = carPage.getContent();
+        totalSize = (int)carPage.getTotalElements();
+        //執行新的查詢時，清空selectedCar
+        selectedCar = null;
+        //執行新的查詢時，隱藏修改區塊
+        upVisible = false;
+    }
 
     /*
      * 前端使用@command(key1="value", key2=object)綁定參數
@@ -46,7 +52,7 @@ public class SearchViewModel {
     public void delete(@BindingParam("thiscar") Car car) {
         carService.delete(car.getId());
         //刪除car時，清空selectedCar，並重新載入Car清單
-        carList = carService.search(keyword);
+        carList = carService.search(keyword, activePage, pageSize).getContent();
         selectedCar = null;
     }
 
@@ -59,7 +65,7 @@ public class SearchViewModel {
             public void onEvent(Event evt) throws Exception {
                 if ("onOK".equals(evt.getName())) {
                     carService.delete(car.getId());
-                    carList = carService.search(keyword);
+                    carList = carService.search(keyword, activePage, pageSize).getContent();
                     selectedCar = null;
                 }
             }

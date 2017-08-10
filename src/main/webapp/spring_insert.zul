@@ -21,7 +21,7 @@
         <row>
             <label value="價格"/>
             <hlayout>
-                <textbox id="price" value="@save(ivm.car.price)" />
+                <intbox id="price" value="@save(ivm.car.price)" />
             </hlayout>
         </row>
         <row>
@@ -43,10 +43,10 @@
                     <attribute name="onClick"><![CDATA[
                         int msg = Messagebox.show("新增成功", "Information", Messagebox.OK, Messagebox.INFORMATION);
                         if(msg == 1) {
-                            model.setValue("");
-                            make.setValue("");
-                            price.setValue("");
-                            des.setValue("");
+                            model.setValue(null);
+                            make.setValue(null);
+                            price.setValue(null);
+                            des.setValue(null);
                         }
                     ]]></attribute>
                 </button>
