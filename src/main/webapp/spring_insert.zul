@@ -1,5 +1,8 @@
 <window title="Insert" width="600px" border="normal" apply="org.zkoss.bind.BindComposer"
-         viewModel="@id('ivm') @init('spring.mvvm.viewmodel.InsertViewModel')" >
+         viewModel="@id('vm') @init('spring.mvvm.viewmodel.InsertViewModel')"
+         validationMessages="@id('vmsgs')">
+<groupbox form="@id('fx') @load(vm.car) @save(vm.car, before='insert') 
+                @validator('spring.mvvm.viewmodel.InsertFormValidator')">
 <grid>
     <columns>
         <column label="項目" width="30%" />
@@ -9,25 +12,29 @@
         <row>
             <label value="名稱"/>
             <hlayout>
-                <textbox id="model" value="@save(ivm.car.model)" />
+                <textbox id="model" value="@save(fx.model)" />
+                <label value="@load(vmsgs['modelError'])" style="color: red" />
             </hlayout>
         </row>
         <row>
             <label value="製造商"/>
             <hlayout>
-                <textbox id="make" value="@save(ivm.car.make)" />
+                <textbox id="make" value="@save(fx.make)" />
+                <label value="@load(vmsgs['makeError'])" style="color: red" />
             </hlayout>
         </row>
         <row>
             <label value="價格"/>
             <hlayout>
-                <intbox id="price" value="@save(ivm.car.price)" />
+                <intbox id="price" value="@save(fx.price)" />
+                <label value="@load(vmsgs['priceError'])" style="color: red" />
             </hlayout>
         </row>
         <row>
             <label value="描述"/>
             <hlayout>
-                <textbox id="des" rows="5" width="300px" value="@save(ivm.car.description)" />
+                <textbox id="des" rows="5" width="300px" value="@save(fx.description)" />
+                <label value="@load(vmsgs['desError'])" style="color: red" />
             </hlayout>
         </row>
         <row>
@@ -39,19 +46,10 @@
         <row>
             <cell colspan="3" style="text-align:center">
                 <button label="回前一頁" href="spring_index.zul" />
-                <button label="新增" onClick="@command('insert')">
-                    <attribute name="onClick"><![CDATA[
-                        int msg = Messagebox.show("新增成功", "Information", Messagebox.OK, Messagebox.INFORMATION);
-                        if(msg == 1) {
-                            model.setValue(null);
-                            make.setValue(null);
-                            price.setValue(null);
-                            des.setValue(null);
-                        }
-                    ]]></attribute>
-                </button>
+                <button label="新增" onClick="@command('insert')" />
             </cell>
         </row>
     </rows>
 </grid>
+</groupbox>
 </window>
