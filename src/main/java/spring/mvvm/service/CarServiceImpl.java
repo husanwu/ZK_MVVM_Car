@@ -27,8 +27,18 @@ public class CarServiceImpl implements CarService {
     public Page<Car> search(String keyword, Integer activePage, Integer pageSize) {
         Pageable pageable = new PageRequest(activePage, pageSize, new Sort(Direction.ASC, "id"));
         if (keyword == null || keyword.trim().length() == 0) {
-            return repository.findAll(pageable);
+            return this.findAll(pageable);
         }
+        return this.findByModelOrMake(keyword, pageable);
+    }
+
+    @Override
+    public Page<Car> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Car> findByModelOrMake(String keyword, Pageable pageable) {
         return repository.findByModelOrMake(keyword, pageable);
     }
 
